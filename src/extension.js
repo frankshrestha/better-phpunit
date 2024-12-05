@@ -4,8 +4,13 @@ const RemotePhpUnitCommand = require('./remote-phpunit-command.js');
 const DockerPhpUnitCommand = require('./docker-phpunit-command.js');
 
 var globalCommand;
+let autoDetect;
 
 module.exports.activate = function (context) {
+
+    vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
+    onConfigurationChanged();
+
     let disposables = [];
 
     disposables.push(vscode.commands.registerCommand('better-phpunit.run', async () => {
@@ -56,6 +61,9 @@ module.exports.activate = function (context) {
 
     disposables.push(vscode.tasks.registerTaskProvider('phpunit', {
         provideTasks: () => {
+
+            if (autoDetect === 'off') return [];
+
             return [new vscode.Task(
                 { type: "phpunit", task: "run" },
                 2,
@@ -88,6 +96,10 @@ async function runPreviousCommand() {
 function setGlobalCommandInstance(commandInstance) {
     // Store this object globally for the provideTasks, "run-previous", and for tests to assert against.
     globalCommand = commandInstance;
+}
+
+function onConfigurationChanged() {
+    autoDetect = vscode.workspace.getConfiguration('better-phpunit').get('task.autoDetect') || 'on';
 }
 
 // This method is exposed for testing purposes.

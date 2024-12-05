@@ -2,7 +2,7 @@
     "name": "better-phpunit",
     "displayName": "Better PHPUnit",
     "description": "A better PHPUnit test runner",
-    "version": "1.6.2",
+    "version": "1.6.3",
     "publisher": "calebporzio",
     "engines": {
         "vscode": "^1.74.0"
@@ -58,7 +58,7 @@
             }
         ],
         "configuration": {
-            "title": "Better PHPUnit configuration",
+            "title": "Better PHPUnit",
             "properties": {
                 "better-phpunit.commandSuffix": {
                     "type": [
@@ -171,6 +171,15 @@
                     "type": "object",
                     "default": {},
                     "description": "The docker path map. Keys are local (host) paths and values are remote (container) paths."
+                },
+                "better-phpunit.task.autoDetect": {
+                    "type": "string",
+                    "enum": [
+                        "on",
+                        "off"
+                    ],
+                    "default": "on",
+                    "description": "Controls auto detection of tasks."
                 }
             }
         },
